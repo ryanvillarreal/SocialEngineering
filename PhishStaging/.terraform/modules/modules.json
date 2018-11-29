@@ -1,1 +1,0 @@
-{"Modules":[{"Source":"./modules/aws/create-vpc","Key":"1.create_vpc;./modules/aws/create-vpc","Version":"","Dir":".terraform/modules/f6a67f3e763a54ff13fde548ffa8ad9b","Root":""},{"Source":"./modules/aws/phishing-server","Key":"1.phishing_server;./modules/aws/phishing-server","Version":"","Dir":".terraform/modules/501853b75aa3e8268d4383185cacf5da","Root":""}]}
