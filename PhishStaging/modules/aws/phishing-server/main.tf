@@ -24,9 +24,6 @@ resource "aws_key_pair" "phishing-server" {
 }
 
 resource "aws_instance" "phishing-server" {
-  // Currently, variables in provider fields are not supported :(
-  // This severely limits our ability to spin up instances in diffrent regions 
-  // https://github.com/hashicorp/terraform/issues/11578
 
   //provider = "aws.${element(var.regions, count.index)}"
 
@@ -43,10 +40,47 @@ resource "aws_instance" "phishing-server" {
   subnet_id = "${var.subnet_id}"
   associate_public_ip_address = true
 
+
+  provisioner "file" {
+    source = "./scripts/gophish_install.sh"
+    destination = "/tmp/gophish_install.sh"
+
+    connection {
+        type = "ssh"
+        user = "admin"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+    }
+  }
+
+  provisioner "file" {
+    source = "./scripts/gophish.service"
+    destination = "/tmp/gophish.service"
+
+    connection {
+        type = "ssh"
+        user = "admin"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+    }
+  }
+
+  provisioner "file" {
+    source = "./scripts/gophish_service.sh"
+    destination = "/tmp/gophish_service.sh"
+
+    connection {
+        type = "ssh"
+        user = "admin"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+    }
+  }
+
+
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y tmux apache2 certbot jq"
+      "sudo apt-get install -y unzip curl jq",
+      "sudo chmod +x /tmp/gophish_install.sh",
+      "sudo /tmp/gophish_install.sh"
     ]
 
     connection {
