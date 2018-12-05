@@ -8,7 +8,7 @@ data "external" "get_public_ip" {
 
 resource "aws_security_group" "phishing-server" {
   name = "phishing-server"
-  description = "Security group created by Red Baron"
+  description = "Security Group for GoPhish - Phishing Server"
   vpc_id = "${var.vpc_id}"
 
   ingress {

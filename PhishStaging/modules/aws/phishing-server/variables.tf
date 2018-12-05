@@ -10,12 +10,13 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "install" {
-  type = "map"
-  default = {
-    "gophish" = "./scripts/gophish_install.sh"
-  }
-}
+// This was left over from Red Baron, but I'm not sure how this works in terms of passing the file
+# variable "install" {
+#   type = "map"
+#   default = {
+#     "gophish" = "./scripts/gophish_install.sh"
+#   }
+# }
 
 variable "amis" {
   type = "map"

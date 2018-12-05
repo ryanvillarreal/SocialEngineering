@@ -90,10 +90,12 @@ resource "aws_instance" "phishing-server" {
     }
   }
 
+  // setup ssh keys in the ssh_keys folder.  add Aliasing support for easy to use ssh
   provisioner "local-exec" {
     command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/phishing_server_${self.public_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/phishing_server_${self.public_ip}.pub" 
   }
 
+  // remove the keys from the ssh_keys server and remove any aliasing
   provisioner "local-exec" {
     when = "destroy"
     command = "rm ./ssh_keys/phishing_server_${self.public_ip}*"
