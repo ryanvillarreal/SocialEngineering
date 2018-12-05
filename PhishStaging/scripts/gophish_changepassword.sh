@@ -5,7 +5,6 @@ sudo apt -qq install -y sqlite apache2-utils
 
 # create a random string password and salt value.
 password=`sudo head /dev/urandom | tr -dc A-Za-z | head -c 13; echo ''`
-#password="QDLAQWTUBOHLM"
 
 hash=`htpasswd -bnBC 10 "" "$password" | tr -d ':\n' | sed 's/$2y/$2a/'`
 echo "$password"
