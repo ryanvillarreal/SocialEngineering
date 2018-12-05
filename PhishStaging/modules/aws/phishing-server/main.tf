@@ -74,13 +74,26 @@ resource "aws_instance" "phishing-server" {
     }
   }
 
+  provisioner "file" {
+    source = "./scripts/gophish_changepassword.sh"
+    destination = "/tmp/gophish_changepassword.sh"
+
+    connection {
+        type = "ssh"
+        user = "admin"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+    }
+  }
+
 
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y unzip curl jq",
       "sudo chmod +x /tmp/gophish_install.sh",
-      "sudo /tmp/gophish_install.sh"
+      "sudo /tmp/gophish_install.sh",
+      "sudo chmod +x /tmp/gophish_changepassword.sh",
+      "sudo /tmp/gophish_changepassword.sh"
     ]
 
     connection {
